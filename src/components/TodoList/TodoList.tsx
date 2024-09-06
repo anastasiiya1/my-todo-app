@@ -2,9 +2,11 @@ import {useState} from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import TodoItem from "../TodoItem/TodoItem";
 import TodoForm from "../TodoForm/TodoForm";
+import { Todo } from "../types";
 import {
   getAllTodos,
   deleteTodo,
+  updateTodoById
 } from "../../api";
 import "./TodoList.css";
 
@@ -25,8 +27,22 @@ const TodoList: React.FC = () => {
     onSuccess: () => queryClient.invalidateQueries({queryKey: ["todos"]}),
   });
 
+  const mutationUpdate = useMutation({
+    mutationFn: ({ id, updatedTodo }: { id: string; updatedTodo: Partial<Omit<Todo, "id" | "createdAt">> }) => {
+      return updateTodoById(id, updatedTodo);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
+
   const handleDelete = (id: string) => {
     mutationDelete.mutate(id);
+  };
+
+  const handleEdit = (id: string, updatedTodo: { title: string; completed: boolean }) => {
+    mutationUpdate.mutate({ id, updatedTodo });
   };
 
   const handleAddTodo = () => {
@@ -56,6 +72,7 @@ const TodoList: React.FC = () => {
           key={todo.id}
           todo={todo}
           onDelete={handleDelete}
+          onEdit={handleEdit}
         />
       ))}
     </div>
