@@ -1,8 +1,23 @@
-import { useState } from 'react';
-import { TodoItemProps } from '../types';
-import './TodoItem.css';
+import { useState } from "react";
+import { TodoItemProps } from "../types";
+import {
+  TodoItemContainer,
+  EditForm,
+  EditButton,
+  EditCheckbox,
+  EditInput,
+  TodoCheckbox,
+  SaveButton,
+  CheckboxLabel,
+  DeleteButton,
+} from "./TodoItem.styles";
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggleComplete, onDelete, onEdit }) => {
+const TodoItem: React.FC<TodoItemProps> = ({
+  todo,
+  onToggleComplete,
+  onDelete,
+  onEdit,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(todo.title);
   const [isCompleted, setIsCompleted] = useState(todo.completed);
@@ -19,7 +34,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggleComplete, onDelete, o
     }
   };
 
-
   const handleEdit = () => {
     if (isEditing && todo.id) {
       onEdit(todo.id, { title: newTitle, completed: isCompleted });
@@ -28,46 +42,41 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggleComplete, onDelete, o
   };
 
   return (
-    <div className="todo-item">
-    {isEditing ? (
-      <div className="edit-form">
-        <input
-          type="text"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-          className="edit-input"
-        />
-        <label className="edit-checkbox">
-          <input
-            type="checkbox"
-            checked={isCompleted}
-            onChange={() => setIsCompleted(!isCompleted)}
+    <TodoItemContainer>
+      {isEditing ? (
+        <EditForm>
+          <EditInput
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
           />
-          Completed
-        </label>
-        <button onClick={handleEdit} className="save-button">
-          Save
-        </button>
-      </div>
-    ) : (
-      <>
-        <label className={`todo-checkbox ${todo.completed ? 'completed' : ''}`}>
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={handleToggleComplete}
-          />
-          <span className="checkbox-label">{todo.title}</span>
-        </label>
-        <button className="edit-button" onClick={handleEdit}>
-          {isEditing ? 'Cancel' : 'Edit'}
-        </button>
-        <button className="delete-button" onClick={handleDelete}>
-          Delete
-        </button>
-      </>
-    )}
-  </div>
+          <EditCheckbox>
+            <input
+              type="checkbox"
+              checked={isCompleted}
+              onChange={() => setIsCompleted(!isCompleted)}
+            />
+            Completed
+          </EditCheckbox>
+          <SaveButton onClick={handleEdit}>Save</SaveButton>
+        </EditForm>
+      ) : (
+        <>
+          <TodoCheckbox $completed={todo.completed}>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={handleToggleComplete}
+            />
+            <CheckboxLabel>{todo.title}</CheckboxLabel>
+          </TodoCheckbox>
+          <EditButton onClick={handleEdit}>
+            {isEditing ? "Cancel" : "Edit"}
+          </EditButton>
+          <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
+        </>
+      )}
+    </TodoItemContainer>
   );
 };
 

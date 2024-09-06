@@ -8,7 +8,8 @@ import {
   deleteTodo,
   updateTodoById
 } from "../../api";
-import "./TodoList.css";
+// import "./TodoList.css";
+import { TodoListContainer, CreateButton } from "./TodoListStyles";
 
 const TodoList: React.FC = () => {
   const queryClient = useQueryClient();
@@ -59,23 +60,16 @@ const TodoList: React.FC = () => {
   if (isError) return <div>Error loading todos</div>;
 
   return (
-    <div className="todo-list">
-      {isFormVisible ? (
-        <TodoForm onSuccess={handleFormSuccess} />
-      ) : (
-        <button className="create-button" onClick={handleAddTodo}>
-          Create new task
-        </button>
-      )}
-      {todos?.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
-        />
-      ))}
-    </div>
+    <TodoListContainer>
+    {isFormVisible ? (
+      <TodoForm onSuccess={handleFormSuccess} />
+    ) : (
+      <CreateButton onClick={handleAddTodo}>Create new task</CreateButton>
+    )}
+    {todos?.map((todo) => (
+      <TodoItem key={todo.id} todo={todo} onDelete={handleDelete} onEdit={handleEdit} />
+    ))}
+  </TodoListContainer>
   );
 };
 

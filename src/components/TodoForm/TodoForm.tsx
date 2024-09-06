@@ -1,26 +1,36 @@
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { createNewTodo } from '../../api';
-import { TodoFormProps } from '../types';
-import './TodoForm.css';
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { createNewTodo } from "../../api";
+import { TodoFormProps } from "../types";
+import {
+  FormContainer,
+  FormGroup,
+  Label,
+  FormControl,
+  ErrorMessageStyled,
+  SubmitButton,
+} from "./TodoFormStyles";
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required('Title is required'),
+  title: Yup.string().required("Title is required"),
   completed: Yup.boolean(),
 });
 
 const initialValues = {
-  title: '',
+  title: "",
   completed: false,
 };
 
 const TodoForm: React.FC<TodoFormProps> = ({ onSuccess }) => {
-  const handleSubmit = async (values: { title: string; completed: boolean }, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+  const handleSubmit = async (
+    values: { title: string; completed: boolean },
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
     try {
       await createNewTodo({ title: values.title, completed: values.completed });
       onSuccess();
     } catch (error) {
-      console.error('Error creating todo:', error);
+      console.error("Error creating todo:", error);
     } finally {
       setSubmitting(false);
     }
@@ -33,21 +43,18 @@ const TodoForm: React.FC<TodoFormProps> = ({ onSuccess }) => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
-        <Form className="todo-form">
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <Field
-              type="text"
-              name="title"
-              id="title"
-              className="form-control"
-            />
-            <ErrorMessage name="title" component="div" className="error-message" />
-          </div>
-          <button type="submit" className="submit-button" disabled={isSubmitting}>
-            Add Task
-          </button>
-        </Form>
+        <FormContainer>
+          <Form className="todo-form">
+            <FormGroup>
+              <Label htmlFor="title">Title</Label>
+              <FormControl type="text" name="title" id="title" />
+              <ErrorMessageStyled name="title" component="div" />
+            </FormGroup>
+            <SubmitButton type="submit" disabled={isSubmitting}>
+              Add Task
+            </SubmitButton>
+          </Form>
+        </FormContainer>
       )}
     </Formik>
   );
