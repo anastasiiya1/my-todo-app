@@ -5,13 +5,11 @@ export interface Todo {
 	completed: boolean;
   }
 
-export interface TodoItemProps {
+  export interface TodoItemProps {
 	todo: Todo;
-	onToggleComplete: (id: string) => Promise<void>;
-	onDelete: (id: string) => Promise<void>;
-	onEdit: () => void;
+	onToggleComplete?: (id: string) => void;
+	onDelete: (id: string) => void;
   }
-
 export interface TodoFormProps {
 	onSuccess: () => void;
   }

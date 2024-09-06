@@ -1,8 +1,8 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createNewTodo } from '../../api';
-import {TodoFormProps} from '../types'
-import './TodoForm.css'
+import { TodoFormProps } from '../types';
+import './TodoForm.css';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
@@ -13,7 +13,6 @@ const initialValues = {
   title: '',
   completed: false,
 };
-
 
 const TodoForm: React.FC<TodoFormProps> = ({ onSuccess }) => {
   const handleSubmit = async (values: { title: string; completed: boolean }, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
@@ -44,8 +43,6 @@ const TodoForm: React.FC<TodoFormProps> = ({ onSuccess }) => {
               className="form-control"
             />
             <ErrorMessage name="title" component="div" className="error-message" />
-          </div>
-          <div className="form-group">
           </div>
           <button type="submit" className="submit-button" disabled={isSubmitting}>
             Add Task
