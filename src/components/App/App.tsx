@@ -1,6 +1,6 @@
 import { Container, Typography, Box } from '@mui/material';
 import TodoList from '../TodoList/TodoList';
-import { containerStyle, titleStyle, boxStyle } from '../../AppStyles';
+import { containerStyle, titleStyle, boxStyle } from './AppStyles';
 
 const App = () => {
   return (
