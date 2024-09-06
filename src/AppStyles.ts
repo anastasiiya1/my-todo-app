@@ -4,6 +4,7 @@ export const containerStyle: SxProps<Theme> = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  margin: '0 auto',
   mt: 5
 };
 
